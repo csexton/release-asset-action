@@ -24,7 +24,7 @@
   "homepage": "https://github.com/actions/javascript-action#readme",
   "dependencies": {
     "@actions/core": "^1.1.1",
-    "@octokit/rest": "^16.33.0"
+    "@actions/github": "^1.1.0"
   },
   "devDependencies": {
     "eslint": "^6.3.0",
