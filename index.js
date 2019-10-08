@@ -1,22 +1,22 @@
-const core = require('@actions/core');
-const wait = require('./wait');
+const github = require('@actions/github');
+//const core = require('@actions/core');
 
-
-// most @actions toolkit packages have async methods
 async function run() {
-  try { 
-    const ms = core.getInput('milliseconds');
-    console.log(`Waiting ${ms} milliseconds ...`)
+  // This should be a token with access to your repository scoped in as a secret.
+  // The YML workflow will need to set myToken with the GitHub Secret Token
+  // myToken: ${{ secrets.GITHUB_TOKEN }
+  // https://help.github.com/en/articles/virtual-environments-for-github-actions#github_token-secret
+  //const token = core.getInput('myToken');
+  const token = process.env.GITHUB_TOKEN;
 
-    core.debug((new Date()).toTimeString())
-    wait(parseInt(ms));
-    core.debug((new Date()).toTimeString())
+  const octokit = new github.GitHub(token);
+  const context = github.context;
 
-    core.setOutput('time', new Date().toTimeString());
-  } 
-  catch (error) {
-    core.setFailed(error.message);
-  }
+  const { data: release } = await octokit.repos.listReleases({
+    ...context.repo
+  })
+
+  console.log(release);
 }
 
-run()
+run();
