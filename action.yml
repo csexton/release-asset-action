@@ -1,13 +1,18 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'Release Asset'
+description: 'Upload files to a release'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  file:
+    description: The file to upload
+    required: false
+  pattern:
+    description: Glob pattern of files to upload
+    required: false
+  github-token:
+    description: The GitHub token used to create an authenticated client
     required: true
-    default: '1000'
 outputs:
-  time: # output will be available to future steps 
-    description: 'The message to output'
+  url:
+    description: 'URL to the Release HTML Page'
 runs:
   using: 'node12'
-  main: 'index.js'
+  main: 'main.js'
