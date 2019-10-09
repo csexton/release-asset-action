@@ -14,12 +14,12 @@ async function run() {
   console.log("* Event Name **********************************************************************");
   console.log(context.eventName);
   console.log("* Release **********************************************************************");
-  console.log(context.release);
+  console.log(context.payload.release);
 
 
   const { data: release } = await octokit.repos.updateRelease({
     ...context.repo,
-    release_id: context.release.id,
+    release_id: context.payload.release.id,
     body: "body from action"
   });
   //console.log("* CONTEXT **********************************************************************");
