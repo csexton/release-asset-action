@@ -1,4 +1,5 @@
 const github = require('@actions/github');
+const fs = require('fs');
 //const core = require('@actions/core');
 
 async function run() {
@@ -22,6 +23,13 @@ async function run() {
     release_id: context.payload.release.id,
     body: "body from action"
   });
+
+  file = fs.readFileSync("README.md")
+  octokit.repos.uploadReleaseAsset({
+    file: file,
+    name: "README.md"
+    url: context.payload.release.upload_url
+  })
   //console.log("* CONTEXT **********************************************************************");
   //console.log(context);
   //const { data: release } = await octokit.repos.listReleases({
