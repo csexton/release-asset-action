@@ -27,7 +27,7 @@ async function run() {
   file = fs.readFileSync("README.md")
   octokit.repos.uploadReleaseAsset({
     file: file,
-    name: "README.md"
+    name: "README.md",
     url: context.payload.release.upload_url
   })
   //console.log("* CONTEXT **********************************************************************");
