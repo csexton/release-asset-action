@@ -13,14 +13,23 @@ async function run() {
   const context = github.context;
   console.log("* Event Name **********************************************************************");
   console.log(context.eventName);
-  console.log("* CONTEXT **********************************************************************");
-  console.log(context);
-  const { data: release } = await octokit.repos.listReleases({
-    ...context.repo
-  })
+  console.log("* Event Name **********************************************************************");
+  console.log(context.release);
 
-  console.log("* RELEASE **********************************************************************");
-  console.log(release);
+
+  const { data: release } = await octokit.repos.updateRelease({
+    ...context.repo,
+    release_id: context.release.id,
+    body: "body from action"
+  });
+  //console.log("* CONTEXT **********************************************************************");
+  //console.log(context);
+  //const { data: release } = await octokit.repos.listReleases({
+  //  ...context.repo
+  //})
+
+  //console.log("* RELEASE **********************************************************************");
+  //console.log(release);
 }
 
 run();
