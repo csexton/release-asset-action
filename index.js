@@ -11,6 +11,8 @@ async function run() {
 
   const octokit = new github.GitHub(token);
   const context = github.context;
+  console.log("* Event Name **********************************************************************");
+  console.log(context.eventName);
   console.log("* CONTEXT **********************************************************************");
   console.log(context);
   const { data: release } = await octokit.repos.listReleases({
