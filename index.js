@@ -25,11 +25,15 @@ async function run() {
   });
 
   file = fs.readFileSync("README.md")
-  octokit.repos.uploadReleaseAsset({
+
+  const { data: uploadAsset } = await octokit.repos.uploadReleaseAsset({
     file: file,
     name: "README.md",
     url: context.payload.release.upload_url
   })
+  console.log("* UPLOAD **********************************************************************");
+  console.log(uploadAsset);
+
   //console.log("* CONTEXT **********************************************************************");
   //console.log(context);
   //const { data: release } = await octokit.repos.listReleases({
