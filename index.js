@@ -13,7 +13,7 @@ async function run() {
   const context = github.context;
   console.log("* Event Name **********************************************************************");
   console.log(context.eventName);
-  console.log("* Event Name **********************************************************************");
+  console.log("* Release **********************************************************************");
   console.log(context.release);
 
 
