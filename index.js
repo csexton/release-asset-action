@@ -11,11 +11,13 @@ async function run() {
 
   const octokit = new github.GitHub(token);
   const context = github.context;
-
+  console.log("* CONTEXT **********************************************************************");
+  console.log(context);
   const { data: release } = await octokit.repos.listReleases({
     ...context.repo
   })
 
+  console.log("* RELEASE **********************************************************************");
   console.log(release);
 }
 
