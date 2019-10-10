@@ -17,22 +17,22 @@ async function run() {
   console.log("* Release **********************************************************************");
   console.log(context.payload.release);
 
+  //const { data: release } = await octokit.repos.updateRelease({
+  //  ...context.repo,
+  //  release_id: context.payload.release.id,
+  //  body: "body from action"
+  //});
 
-  const { data: release } = await octokit.repos.updateRelease({
-    ...context.repo,
-    release_id: context.payload.release.id,
-    body: "body from action"
-  });
-
-  file = fs.readFileSync("README.md")
-
+  file = fs.readFileSync("doc.tar.bz2")
   const { data: uploadAsset } = await octokit.repos.uploadReleaseAsset({
+    name: "Artifact",
     file: file,
-    name: "README.md",
-    url: context.payload.release.upload_url
-  })
+    url: context.payload.release.upload_url,
+    headers: { "content-length": file.length,
+      "content-type": "text/plain"} })
   console.log("* UPLOAD **********************************************************************");
   console.log(uploadAsset);
+
 
   //console.log("* CONTEXT **********************************************************************");
   //console.log(context);
