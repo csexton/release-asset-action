@@ -10,7 +10,7 @@ function handleError(err) {
   core.setFailed(err.message);
 }
 
-async function upload(filePath, context) {
+async function upload(filePath, context, octokit) {
   let file = fs.readFileSync(filePath);
   let fileName = path.basename(filePath);
 
@@ -37,12 +37,12 @@ async function run() {
   const inputPattern = core.getInput('pattern');
 
   if (inputFile != null) {
-    upload(inputFile, context);
+    upload(inputFile, context, octokit);
   }
 
   if (inputPattern != null) {
     glob(inputPattern, {}, function (er, filePath) {
-      upload(filePath, context);
+      upload(filePath, context, octokit);
     })
   }
 }
