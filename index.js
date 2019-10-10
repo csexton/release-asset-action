@@ -31,7 +31,6 @@ async function run() {
   //});
 
   const filePath = core.getInput('file');
-  filePath = "./doc.tar.bz2";
   file = fs.readFileSync(filePath);
   fileName = path.basename(filePath);
 
