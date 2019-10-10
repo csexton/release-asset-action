@@ -3,6 +3,13 @@ const fs = require('fs');
 const path = require('path');
 const core = require('@actions/core');
 
+process.on('unhandledRejection', handleError);
+
+function handleError(err) {
+  console.error(err);
+  core.setFailed(err.message);
+}
+
 async function run() {
   // This should be a token with access to your repository scoped in as a secret.
   // The YML workflow will need to set myToken with the GitHub Secret Token
@@ -10,7 +17,7 @@ async function run() {
   // https://help.github.com/en/articles/virtual-environments-for-github-actions#github_token-secret
   //const token = core.getInput('myToken');
   //const token = process.env.GITHUB_TOKEN;
-  const token = core.getInput('github-token', {required: true})
+  const token = core.getInput('github-token', {required: true});
 
   const octokit = new github.GitHub(token);
   const context = github.context;
@@ -23,10 +30,10 @@ async function run() {
   //  body: "body from action"
   //});
 
-  const filePath = core.getInput('file')
+  const filePath = core.getInput('file');
   filePath = "./doc.tar.bz2";
-  file = fs.readFileSync(filePath)
-  fileName = path.basename(filePath)
+  file = fs.readFileSync(filePath);
+  fileName = path.basename(filePath);
 
   const { data: uploadAsset } = await octokit.repos.uploadReleaseAsset({
     name: "Artifact",
@@ -37,7 +44,7 @@ async function run() {
   console.log("* UPLOAD **********************************************************************");
   console.log(uploadAsset);
 
-  core.setOutput('url', context.payload.release.html_url)
+  core.setOutput('url', context.payload.release.html_url);
 
 
   //console.log("* CONTEXT **********************************************************************");
