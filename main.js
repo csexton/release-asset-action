@@ -10,7 +10,7 @@ function handleError(err) {
   core.setFailed(err.message);
 }
 
-function upload(filePath, context) {
+async function upload(filePath, context) {
   let file = fs.readFileSync(filePath);
   let fileName = path.basename(filePath);
 
