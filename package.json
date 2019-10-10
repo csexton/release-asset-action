@@ -6,7 +6,8 @@
   },
   "dependencies": {
     "@actions/core": "^1.1.1",
-    "@actions/github": "^1.1.0"
+    "@actions/github": "^1.1.0",
+    "glob": "^7.1.4"
   },
   "devDependencies": {
     "eslint": "^6.3.0"

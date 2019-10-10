@@ -3,7 +3,10 @@ description: 'Upload artifacts to a release'
 inputs:
   file:
     description: The file to upload
-    required: true
+    required: false
+  pattern:
+    description: Glob pattern of files to upload
+    required: false
   github-token:
     description: The GitHub token used to create an authenticated client
     required: true
