@@ -1,5 +1,6 @@
 const github = require('@actions/github');
 const fs = require('fs');
+const path = require('path');
 //const core = require('@actions/core');
 
 async function run() {
@@ -12,10 +13,8 @@ async function run() {
 
   const octokit = new github.GitHub(token);
   const context = github.context;
-  console.log("* Event Name **********************************************************************");
-  console.log(context.eventName);
-  console.log("* Release **********************************************************************");
-  console.log(context.payload.release);
+  console.log("* CONTEXT **********************************************************************");
+  console.log(context);
 
   //const { data: release } = await octokit.repos.updateRelease({
   //  ...context.repo,
@@ -23,7 +22,10 @@ async function run() {
   //  body: "body from action"
   //});
 
-  file = fs.readFileSync("doc.tar.bz2")
+  filePath = "./doc.tar.bz2";
+  file = fs.readFileSync(filePath)
+  fileName = path.basename(filePath)
+
   const { data: uploadAsset } = await octokit.repos.uploadReleaseAsset({
     name: "Artifact",
     file: file,
