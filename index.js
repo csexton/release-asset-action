@@ -35,7 +35,7 @@ async function run() {
   fileName = path.basename(filePath);
 
   const { data: uploadAsset } = await octokit.repos.uploadReleaseAsset({
-    name: "Artifact",
+    name: fileName,
     file: file,
     url: context.payload.release.upload_url,
     headers: { "content-length": file.length,
