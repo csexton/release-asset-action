@@ -48,8 +48,9 @@ async function run() {
   const inputPattern = core.getInput('pattern');
   console.dir(inputPattern);
   if (inputPattern) {
-    glob(inputPattern, {}, function (er, filePath) {
-      upload(filePath, context, octokit);
+    glob(inputPattern, {}, function (er, match) {
+      console.log(`Uploading matched file: ${match}`);
+      upload(match, context, octokit);
     })
   }
 }
