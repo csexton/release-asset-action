@@ -38,12 +38,16 @@ async function run() {
   console.log(context);
 
   const inputFile = core.getInput('file');
-  const inputPattern = core.getInput('pattern');
 
+  console.log(inputFile);
+  console.log("* Upload File **********************************************************************");
   if (inputFile != null) {
     upload(inputFile, context, octokit);
   }
 
+  console.log("* Upload Files **********************************************************************");
+  const inputPattern = core.getInput('pattern');
+  console.log(inputPattern);
   if (inputPattern != null) {
     glob(inputPattern, {}, function (er, filePath) {
       upload(filePath, context, octokit);
