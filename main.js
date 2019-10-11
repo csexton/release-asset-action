@@ -1,7 +1,8 @@
-const github = require('@actions/github');
-const fs = require('fs');
-const path = require('path');
 const core = require('@actions/core');
+const fs = require('fs');
+const github = require('@actions/github');
+const glob = require("glob");
+const path = require('path');
 
 process.on('unhandledRejection', handleError);
 
@@ -18,8 +19,11 @@ async function upload(filePath, context, octokit) {
     name: fileName,
     file: file,
     url: context.payload.release.upload_url,
-    headers: { "content-length": file.length,
-      "content-type": "text/plain"} })
+    headers: {
+      "content-length": file.length,
+      "content-type": "text/plain"
+    }
+  });
   console.log(`*** Uploaded ${filePath}`);
   console.log("* UPLOAD **********************************************************************");
   console.log(uploadAsset);
