@@ -47,7 +47,7 @@ async function run() {
 
   console.log("* Upload Files **********************************************************************");
   const inputPattern = core.getInput('pattern');
-  console.log(inputPattern);
+  console.log( JSON.stringify(inputPattern) );
   if (inputPattern != null) {
     glob(inputPattern, {}, function (er, filePath) {
       upload(filePath, context, octokit);
