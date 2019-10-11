@@ -2,6 +2,7 @@ const core = require('@actions/core');
 const fs = require('fs');
 const github = require('@actions/github');
 const glob = require('glob');
+const mime = require('mime-types')
 const path = require('path');
 
 process.on('unhandledRejection', handleError);
@@ -14,6 +15,7 @@ function handleError(err) {
 async function upload(filePath, context, octokit) {
   let file = fs.readFileSync(filePath);
   let fileName = path.basename(filePath);
+  let mimeType = mime.lookup(fileName) || 'application/octet-stream'
 
   let { data: uploadAsset } = await octokit.repos.uploadReleaseAsset({
     name: fileName,
@@ -21,7 +23,7 @@ async function upload(filePath, context, octokit) {
     url: context.payload.release.upload_url,
     headers: {
       "content-length": file.length,
-      "content-type": "text/plain"
+      "content-type": mimeType
     }
   });
   console.log(`*** Uploaded ${filePath}`);
