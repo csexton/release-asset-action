@@ -50,6 +50,7 @@ async function run() {
   if (inputPattern) {
     glob(inputPattern, {}, function (er, match) {
       console.log(`Uploading matched file: ${match}`);
+      console.dir(match);
       upload(match, context, octokit);
     })
   }
