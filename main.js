@@ -1,7 +1,7 @@
 const core = require('@actions/core');
 const fs = require('fs');
 const github = require('@actions/github');
-const glob = require("glob");
+const glob = require('glob');
 const path = require('path');
 
 process.on('unhandledRejection', handleError);
@@ -37,12 +37,12 @@ async function run() {
   console.log("* CONTEXT **********************************************************************");
   console.log(context);
 
-  console.log("* Upload File **********************************************************************");
-  const inputFile = core.getInput('file');
-  console.dir(inputFile);
-  if (inputFile) {
-    upload(inputFile, context, octokit);
-  }
+  //console.log("* Upload File **********************************************************************");
+  //const inputFile = core.getInput('file');
+  //console.dir(inputFile);
+  //if (inputFile) {
+  //  upload(inputFile, context, octokit);
+  //}
 
   console.log("* Upload Files **********************************************************************");
   const inputPattern = core.getInput('pattern');
