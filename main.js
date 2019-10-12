@@ -28,7 +28,8 @@ async function upload(filePath, context, octokit) {
 
   console.log(`Uploading file: ${filePath}`);
 
-  let { data: uploadAsset } = await octokit.repos.uploadReleaseAsset({
+  try {
+  let response  = await octokit.repos.uploadReleaseAsset({
     name: fileName,
     file: file,
     url: context.payload.release.upload_url,
@@ -37,6 +38,15 @@ async function upload(filePath, context, octokit) {
       "content-type": mimeType
     }
   });
+  } catch (error) {
+    console.log("* ERROR ************************************************************************");
+    console.dir(error);
+    console.log("* RESPONSE *********************************************************************");
+    console.dir(response);
+    console.log("********************************************************************************");
+    core.error(`Upload failed: ${error}`);
+    core.setFailed(err.message);
+  }
   console.log(`Uploaded ${fileName}`);
 }
 
