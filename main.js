@@ -26,7 +26,7 @@ async function upload(filePath, context, octokit) {
   let fileName = path.basename(filePath);
   let mimeType = mime.lookup(fileName) || 'application/octet-stream';
 
-  console.log(`Uploading file: ${file}`);
+  console.log(`Uploading file: ${filePath}`);
 
   let { data: uploadAsset } = await octokit.repos.uploadReleaseAsset({
     name: fileName,
@@ -37,7 +37,7 @@ async function upload(filePath, context, octokit) {
       "content-type": mimeType
     }
   });
-  console.log(`Uploaded ${filePath}`);
+  console.log(`Uploaded ${fileName}`);
 }
 
 async function run() {
