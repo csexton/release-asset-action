@@ -5,17 +5,28 @@ const glob = require('glob');
 const mime = require('mime-types')
 const path = require('path');
 
-process.on('unhandledRejection', handleError);
-
-function handleError(err) {
-  console.error(err);
+process.on('unhandledRejection', (err) => {
+  core.error(err);
   core.setFailed(err.message);
+});
+
+function tap (value, fn) {
+  fn(value);
+  return value;
+}
+
+async function uploadMultiple(fileList, context, octokit) {
+  for (let file of fileList) {
+    upload(file, context, octokit);
+  }
 }
 
 async function upload(filePath, context, octokit) {
   let file = fs.readFileSync(filePath);
   let fileName = path.basename(filePath);
-  let mimeType = mime.lookup(fileName) || 'application/octet-stream'
+  let mimeType = mime.lookup(fileName) || 'application/octet-stream';
+
+  console.log(`Uploading file: ${file}`);
 
   let { data: uploadAsset } = await octokit.repos.uploadReleaseAsset({
     name: fileName,
@@ -26,9 +37,7 @@ async function upload(filePath, context, octokit) {
       "content-type": mimeType
     }
   });
-  console.log(`*** Uploaded ${filePath}`);
-  console.log("* UPLOAD **********************************************************************");
-  console.log(uploadAsset);
+  console.log(`Uploaded ${filePath}`);
 }
 
 async function run() {
@@ -36,28 +45,34 @@ async function run() {
   const octokit = new github.GitHub(token);
   const context = github.context;
   core.setOutput('url', context.payload.release.html_url);
-  console.log("* CONTEXT **********************************************************************");
-  console.log(context);
 
-  console.log("* Upload File **********************************************************************");
-  const inputFile = core.getInput('file');
-  console.dir(inputFile);
-  if (inputFile) {
-    upload(inputFile, context, octokit);
+  if (! context.payload.release) {
+    core.warning("Not running action as a release, skipping.");
   }
 
-  console.log("* Upload Files **********************************************************************");
-  const inputPattern = core.getInput('pattern');
-  console.dir(inputPattern);
-  if (inputPattern) {
-    glob(inputPattern, {}, function (er, matches) {
-      for (let match of matches) {
-        console.log(`Uploading matched file: ${match}`);
-        console.dir(match);
-        upload(match, context, octokit);
-      }
-    })
+  var list = [];
+
+  // Add any single files
+  list = list.concat(core.getInput('file'))
+
+  // Get list of new-line-seperated files
+  if (core.getInput('files')) {
+    list = list.concat(core.getInput('files').split(/\r?\n/))
   }
+
+  // Get glob pattern of files
+  if (core.getInput('pattern')) {
+    glob(core.getInput('pattern'), {}, (er, matches) => {
+      list = list.concat(matches)
+    });
+  }
+
+  // Clean up list by removing any non-truthy values
+  list = list.filter(n => n);
+
+  // Upload
+  uploadMultiple(list, context, octokit);
+
 }
 
 run();

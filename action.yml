@@ -1,5 +1,5 @@
-name: 'Release'
-description: 'Upload artifacts to a release'
+name: 'Release Asset'
+description: 'Upload files to a release'
 inputs:
   file:
     description: The file to upload
