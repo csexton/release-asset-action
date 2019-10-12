@@ -41,9 +41,8 @@ async function upload(filePath, context, octokit) {
   } catch (error) {
     core.error(`Upload failed: ${error}`);
     for (let e of error.errors) {
-      core.error(e);
+      console.dir(e);
     }
-
     core.setFailed(error.message);
   }
   console.log(`Uploaded ${fileName}`);
