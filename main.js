@@ -39,8 +39,7 @@ async function upload(filePath, context, octokit) {
       }
     });
   } catch (error) {
-    core.error(`Upload failed: ${error} - ${JSON.stringify(error.errors)}`);
-    core.setFailed(error.message);
+    core.setFailed(`Upload failed: ${error.message} ${JSON.stringify(error.errors)}`);
   }
   console.log(`Uploaded ${fileName}`);
 }
