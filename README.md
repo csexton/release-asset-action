@@ -2,9 +2,18 @@
 
 A GitHub action to add files to a release.
 
+This action will only add files to an existing release, a typical use case:
+
+1. Create a draft release
+1. Trigger an aciton
+1. Build your project
+1. Upload any binaries, artifiacts or other assets to the release
+
+In other words all this action does it upload assets to a release. For more information on creating releases see [Creating Releases](https://help.github.com/en/articles/creating-releases).
+
 ### Using this action
 
-Add the following step to your build
+To upload a single file add a step like the following your workflow:
 
 ```
 name: Release
@@ -53,3 +62,8 @@ Pattern to glob for files:
     pattern: "build/*.zip"
     github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
+
+
+# License
+
+MIT. See [LICENSE](LICENSE) for details.
