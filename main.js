@@ -22,6 +22,7 @@ async function uploadMultiple(fileList, context, octokit) {
 }
 
 async function upload(filePath, context, octokit) {
+  filePath = filePath.trim();
   let file = fs.readFileSync(filePath);
   let fileName = path.basename(filePath);
   let mimeType = mime.lookup(fileName) || 'application/octet-stream';
@@ -48,11 +49,13 @@ async function run() {
   const token = core.getInput('github-token', {required: true});
   const octokit = new github.GitHub(token);
   const context = github.context;
-  core.setOutput('url', context.payload.release.html_url);
 
   if (! context.payload.release) {
     core.warning("Not running action as a release, skipping.");
+    return;
   }
+
+  core.setOutput('url', context.payload.release.html_url);
 
   var list = [];
 
@@ -74,9 +77,8 @@ async function run() {
   // Clean up list by removing any non-truthy values
   list = list.filter(n => n);
 
-  // Upload
+  // Upload the lot of 'em
   uploadMultiple(list, context, octokit);
-
 }
 
 run();
