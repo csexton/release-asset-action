@@ -10,11 +10,6 @@ process.on('unhandledRejection', (err) => {
   core.setFailed(err.message);
 });
 
-function tap (value, fn) {
-  fn(value);
-  return value;
-}
-
 async function uploadMultiple(fileList, context, octokit) {
   for (let file of fileList) {
     upload(file, context, octokit);
