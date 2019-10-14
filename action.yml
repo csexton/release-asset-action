@@ -4,6 +4,9 @@ inputs:
   file:
     description: The file to upload
     required: false
+  files:
+    description: A new line seperated list of files upload
+    required: false
   pattern:
     description: Glob pattern of files to upload
     required: false
