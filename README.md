@@ -30,7 +30,7 @@ jobs:
     - name: Build
       run: make
     - name: Upload asset to release
-      uses: csexton/release-action@v1
+      uses: radiusnetworks/release-asset-action@v1
       with:
         file: my-release.zip
         github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -44,7 +44,7 @@ New line seperated list of files:
 
 ```
 - name: Upload multiple assets to release
-  uses: csexton/release-action@v1
+  uses: radiusnetworks/release-asset-action@v1
   with:
     files: |
       first.zip
@@ -57,7 +57,7 @@ Pattern to glob for files:
 
 ```
 - name: Upload Assets to Release with a wildcard
-  uses: csexton/release-action@v1
+  uses: radiusnetworks/release-asset-action@v1
   with:
     pattern: "build/*.zip"
     github-token: ${{ secrets.GITHUB_TOKEN }}
