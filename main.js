@@ -64,9 +64,7 @@ async function run() {
 
   // Get glob pattern of files
   if (core.getInput('pattern')) {
-    glob(core.getInput('pattern'), {}, (er, matches) => {
-      list = list.concat(matches)
-    });
+    list = list.concat(glob.sync(core.getInput('pattern')));
   }
 
   // Clean up list by removing any non-truthy values
