@@ -48,7 +48,7 @@ async function run() {
   let url;
   if (! context.payload.release) {
       url = core.getInput('release-url', {required: false});
-      if(url){
+      if(!url){
         core.error("U need to provide an url if the action does not run on a release!");
         process.exit(1);
       }
