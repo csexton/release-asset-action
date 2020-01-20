@@ -5,19 +5,29 @@ A GitHub action to add files to a release.
 ### Parameters
 
 -  file:
+
     description: The file to upload
+    
     required: false
 -   files:
+
     description: A new line seperated list of files upload
+    
     required: false
 -   pattern:
+
     description: Glob pattern of files to upload
+    
     required: false
 -   github-token:
+
     description: The GitHub token used to create an authenticated client
+    
     required: true
 -   release-url:
+
     description: The url of the release files are uploaded to
+    
     required: false
 
 ### There are two ways u can use this action:
