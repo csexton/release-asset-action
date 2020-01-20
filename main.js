@@ -49,8 +49,8 @@ async function run() {
   if (! context.payload.release) {
       url = core.getInput('release-url', {required: false});
       if(!url){
-        core.error("U need to provide an url if the action does not run on a release!");
-        process.exit(1);
+	core.warning("No release URL, skipping. This action requires either a release URL passed in or run as part of a release event");
+        return;
       }
   }else{
       url= core.getInput('release-url', {required: false}) || context.payload.release.html_url;
