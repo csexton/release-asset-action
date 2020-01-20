@@ -2,7 +2,7 @@
 
 A GitHub action to add files to a release.
 
-## Parameters
+### Parameters
 
 -  file:
 
@@ -30,7 +30,7 @@ A GitHub action to add files to a release.
     
     required: false
 
-### There are two ways u can use this action:
+### There are two ways you can use this action:
 - Trigger on a release (does not work with drafts)
 - Chain it after another action that creates an release
 
