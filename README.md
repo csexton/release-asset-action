@@ -2,7 +2,7 @@
 
 A GitHub action to add files to a release.
 
-### Parameters
+## Parameters
 
 -  file:
 
@@ -36,6 +36,7 @@ A GitHub action to add files to a release.
 
 If you trigger on release there is no need to provide the `release-url` tho if you trigger normally and chain it after another action you need to provide this parameter.
 
+### Examples
 Example on release:
 ```
 name: Release
@@ -102,7 +103,7 @@ jobs:
           release-url: ${{ steps.create_release.outputs.upload_url }}
  ```
 
-### Using this action
+### Selecting the right files with this action to upload
 
 To upload a single file add a step like the following your workflow:
 
