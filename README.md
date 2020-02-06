@@ -4,40 +4,27 @@ A GitHub action to add files to a release.
 
 ### Parameters
 
--  file:
-
-    description: The file to upload
-    
-    required: false
--   files:
-
-    description: A new line seperated list of files upload
-    
-    required: false
--   pattern:
-
-    description: Glob pattern of files to upload
-    
-    required: false
--   github-token:
-
-    description: The GitHub token used to create an authenticated client
-    
-    required: true
--   release-url:
-
-    description: The url of the release files are uploaded to
-    
-    required: false
+| Parameter | Description | Required |
+| --------- | ----------- | -------- |
+| `file` | The file to upload | Optional |
+| `files` | A new line seperated list of files upload | Optional |
+| `pattern` | Glob pattern of files to upload | Optional |
+| `github-token` | The GitHub token used to create an authenticated client | Required |
+| `release-url` | The target url for the release file uploads | Optional |
 
 ### There are two ways you can use this action:
+
 - Trigger on a release (does not work with drafts)
 - Chain it after another action that creates an release
 
-If you trigger on release there is no need to provide the `release-url` tho if you trigger normally and chain it after another action you need to provide this parameter.
+If this release is triggered on a "release" event, the url can automatically be
+detected. However, if it is chained the `release-url` will need to be passed in
+from the previous steps.
 
 ### Examples
-Example on release:
+
+Example on release event:
+
 ```
 name: Release
 
@@ -53,14 +40,15 @@ jobs:
     - name: Build
       run: make
     - name: Upload asset to release
-      uses: csexton/release-asset-action@v1
+      uses: csexton/release-asset-action@v2
       with:
         file: my-release.zip
         github-token: ${{ secrets.GITHUB_TOKEN }}
     - run: false
 ```
- Example chain after another action:
- 
+
+Example on tag event chained after another action:
+
  ```
  name: Build and relase
 
@@ -70,37 +58,29 @@ on:
       - 'v*'
 
 jobs:
-  release:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Set up JDK 11
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: Auto generated release
-          draft: true
-          prerelease: false
-      - name: Build win zip
-        run: ./gradlew distZip -PprojVersion=${GITHUB_REF##*/} -PjavafxPlatform=win
-      - name: Build linux tar
-        run: ./gradlew distTar -PprojVersion=${GITHUB_REF##*/} -PjavafxPlatform=linux
-      - name: Build mac tar
-        run: ./gradlew distTar -PprojVersion=${GITHUB_REF##*/} -PjavafxPlatform=mac && ls ./build/distributions
-      - name: Upload Assets to Release with a wildcard
-        uses: csexton/release-asset-action@v1
-        with:
-          pattern: "build/distributions/*"
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          release-url: ${{ steps.create_release.outputs.upload_url }}
+    - uses: actions/checkout@v1
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: Auto generated release
+        draft: true
+        prerelease: false
+    - name: Build
+      run: make
+    - name: Upload Assets to Release with a wildcard
+      uses: csexton/release-asset-action@v1
+      with:
+        pattern: "build/*"
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        release-url: ${{ steps.create_release.outputs.upload_url }}
  ```
 
 ### Selecting the right files with this action to upload
