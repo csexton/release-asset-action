@@ -13,6 +13,9 @@ inputs:
   github-token:
     description: The GitHub token used to create an authenticated client
     required: true
+  release-url:
+    description: The url of the release files are uploaded to
+    required: false
 outputs:
   url:
     description: 'URL to the Release HTML Page'

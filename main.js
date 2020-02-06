@@ -10,13 +10,13 @@ process.on('unhandledRejection', (err) => {
   core.setFailed(err.message);
 });
 
-async function uploadMultiple(fileList, context, octokit) {
+async function uploadMultiple(fileList, context, octokit, url) {
   for (let file of fileList) {
-    upload(file, context, octokit);
+    upload(file, context, octokit, url);
   }
 }
 
-async function upload(filePath, context, octokit) {
+async function upload(filePath, context, octokit, url) {
   filePath = filePath.trim();
   let file = fs.readFileSync(filePath);
   let fileName = path.basename(filePath);
@@ -28,7 +28,7 @@ async function upload(filePath, context, octokit) {
     let response  = await octokit.repos.uploadReleaseAsset({
       name: fileName,
       file: file,
-      url: context.payload.release.upload_url,
+      url: url,
       headers: {
         "content-length": file.length,
         "content-type": mimeType
@@ -45,12 +45,18 @@ async function run() {
   const octokit = new github.GitHub(token);
   const context = github.context;
 
+  let url;
   if (! context.payload.release) {
-    core.warning("Not running action as a release, skipping.");
-    return;
+      url = core.getInput('release-url', {required: false});
+      if(!url){
+	core.warning("No release URL, skipping. This action requires either a release URL passed in or run as part of a release event");
+        return;
+      }
+  }else{
+      url= core.getInput('release-url', {required: false}) || context.payload.release.html_url;
   }
 
-  core.setOutput('url', context.payload.release.html_url);
+  core.setOutput('url', url );
 
   var list = [];
 
@@ -71,7 +77,7 @@ async function run() {
   list = list.filter(n => n);
 
   // Upload the lot of 'em
-  uploadMultiple(list, context, octokit);
+  uploadMultiple(list, context, octokit, url);
 }
 
 run();
