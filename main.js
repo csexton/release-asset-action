@@ -58,6 +58,8 @@ async function run() {
 
   core.setOutput('url', url );
 
+  console.log(`Uploading release assets to: ${url}`)
+
   var list = [];
 
   // Add any single files
