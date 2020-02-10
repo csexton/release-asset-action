@@ -25,7 +25,7 @@ async function upload(filePath, context, octokit, url) {
   console.log(`Uploading file: ${filePath}`);
 
   try {
-    let response  = await octokit.repos.uploadReleaseAsset({
+    await octokit.repos.uploadReleaseAsset({
       name: fileName,
       file: file,
       url: url,
@@ -45,15 +45,16 @@ async function run() {
   const octokit = new github.GitHub(token);
   const context = github.context;
 
+  // Get the target URL
   let url;
-  if (! context.payload.release) {
-      url = core.getInput('release-url', {required: false});
-      if(!url){
-	core.warning("No release URL, skipping. This action requires either a release URL passed in or run as part of a release event");
-        return;
-      }
-  }else{
-      url= core.getInput('release-url', {required: false}) || context.payload.release.upload_url;
+  if (context.payload.release) {
+    url = context.payload.release.upload_url;
+  } else {
+    url = core.getInput('release-url', {required: false});
+  }
+  if(!url) {
+    core.warning("No release URL, skipping. This action requires either a release URL passed in or run as part of a release event");
+    return;
   }
 
   core.setOutput('url', url );
@@ -63,11 +64,11 @@ async function run() {
   var list = [];
 
   // Add any single files
-  list = list.concat(core.getInput('file'))
+  list = list.concat(core.getInput('file'));
 
   // Get list of new-line-seperated files
   if (core.getInput('files')) {
-    list = list.concat(core.getInput('files').split(/\r?\n/))
+    list = list.concat(core.getInput('files').split(/\r?\n/));
   }
 
   // Get glob pattern of files
