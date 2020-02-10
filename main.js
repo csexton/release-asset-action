@@ -53,10 +53,12 @@ async function run() {
         return;
       }
   }else{
-      url= core.getInput('release-url', {required: false}) || context.payload.release.html_url;
+      url= core.getInput('release-url', {required: false}) || context.payload.release.upload_url;
   }
 
   core.setOutput('url', url );
+
+  console.log(`Uploading release assets to: ${url}`)
 
   var list = [];
 
