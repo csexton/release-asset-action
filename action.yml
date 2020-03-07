@@ -16,6 +16,12 @@ inputs:
   release-url:
     description: The url of the release files are uploaded to
     required: false
+  release-id:
+    description: The ID of the release
+    required: false
+  allow-overwrite:
+    description: Allow overwriting of existing files
+    required: false
 outputs:
   url:
     description: 'URL to the Release HTML Page'
