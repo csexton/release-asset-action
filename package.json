@@ -5,7 +5,7 @@
     "lint": "eslint main.js"
   },
   "dependencies": {
-    "@actions/core": "^1.1.1",
+    "@actions/core": "^1.2.6",
     "@actions/github": "^1.1.0",
     "glob": "^7.1.4",
     "mime-types": "^2.1.24"
