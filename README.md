@@ -40,7 +40,7 @@ jobs:
     - name: Build
       run: make
     - name: Upload asset to release
-      uses: csexton/release-asset-action@v2
+      uses: csexton/release-asset-action@v3
       with:
         file: my-release.zip
         github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -76,7 +76,7 @@ jobs:
     - name: Build
       run: make
     - name: Upload Assets to Release with a wildcard
-      uses: csexton/release-asset-action@v2
+      uses: csexton/release-asset-action@v3
       with:
         pattern: "build/*"
         github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -89,7 +89,7 @@ To upload a single file add a step like the following your workflow:
 
 ```
     - name: Upload asset to release
-      uses: csexton/release-asset-action@v2
+      uses: csexton/release-asset-action@v3
       with:
         file: my-release.zip
         github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -102,7 +102,7 @@ New line seperated list of files:
 
 ```
 - name: Upload multiple assets to release
-  uses: csexton/release-asset-action@v2
+  uses: csexton/release-asset-action@v3
   with:
     files: |
       first.zip
@@ -115,7 +115,7 @@ Pattern to glob for files:
 
 ```
 - name: Upload Assets to Release with a wildcard
-  uses: csexton/release-asset-action@v2
+  uses: csexton/release-asset-action@v3
   with:
     pattern: "build/*.zip"
     github-token: ${{ secrets.GITHUB_TOKEN }}
